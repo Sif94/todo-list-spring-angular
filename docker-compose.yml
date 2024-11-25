@@ -1,0 +1,41 @@
+services:
+  db:
+    image: postgres
+    container_name: todo_postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: sif
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: todo_db
+    volumes:
+      - spring-postgres:/var/lib/postgresql/data
+    networks:
+      - spring-todo
+
+  mail-dev:
+    container_name: mail-dev-todo
+    image: maildev/maildev
+    ports:
+      - "1080:1080"
+      - "1025:1025"
+  keycloak:
+    container_name: keycloak-todo
+    image: quay.io/keycloak/keycloak:26.0.6
+    ports:
+      - "9090:8080"
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    networks:
+      - spring-todo
+    command:
+      - "start-dev"
+
+volumes:
+  spring-postgres:
+    driver: local
+
+networks:
+  spring-todo:
+    driver: bridge
