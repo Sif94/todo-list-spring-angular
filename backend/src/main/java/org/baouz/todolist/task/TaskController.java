@@ -26,11 +26,10 @@ public class TaskController {
     }
     @PostMapping
     public ResponseEntity<Long> addTask(
-            @RequestBody @Valid TaskRequest request
-    ){
+            @RequestBody @Valid TaskRequest request, Authentication connectedUser){
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(service.createTask(request));
+                .body(service.createTask(request, connectedUser));
     }
 
     @PatchMapping("/{id}")

@@ -1,27 +1,35 @@
 package org.baouz.todolist.task;
 
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.baouz.todolist.commun.PageResponse;
 import org.baouz.todolist.exception.OperationNotPermittedException;
-import org.baouz.todolist.exception.TaskNotFoundException;
+import org.baouz.todolist.notification.NotificationProducer;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import static java.lang.String.format;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class TaskService {
 
+    private final RabbitTemplate rabbitTemplate;
     private final TaskRepository repository;
     private final TaskMapper mapper;
+    private final NotificationProducer producer;
 
 
     public PageResponse<TaskResponse> getTasksByUser(Authentication connectedUser, int page, int size) {
@@ -43,9 +51,15 @@ public class TaskService {
 
     }
 
-    public Long createTask(TaskRequest request) {
+    public Long createTask(TaskRequest request, Authentication connectedUser) {
+        Map<String, Object> attributes;
+        attributes = ((JwtAuthenticationToken) connectedUser).getTokenAttributes();
+        String email = (String) attributes.get("email");
+
         Task task = mapper.toTask(request);
+        task.setOwnerEmail(email);
         task.setStatus(TaskStatus.CREATED);
+        task.setHasBeenNotified(false);
         return repository.save(task).getId();
 
     }
@@ -85,5 +99,21 @@ public class TaskService {
             throw new OperationNotPermittedException("You cannot update others tasks status");
         }
         repository.deleteById(id);
+    }
+
+
+    //@Scheduled(cron = "0 0 * * * *") // Runs every hour
+    //@Scheduled(cron = "0 */2 * * * *")
+    @Scheduled(cron = "0 * * * * *") // Runs every minute for testing
+    public void notifyDueTasks() {
+        log.info("Notifying due tasks");
+        List<Task> tasks = repository.findTasksDueIn24Hours(LocalDateTime.now().plusMinutes(3));
+        //List<Task> tasks = repository.findAll();
+        for (Task task : tasks) {
+            log.info(task.toString());
+            producer.sendNotification(task);
+            task.setHasBeenNotified(true);
+            repository.save(task);
+        }
     }
 }

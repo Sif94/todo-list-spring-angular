@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 
 import java.time.LocalDateTime;
+
 @Builder
 public record TaskRequest(
         @NotNull(message = "Task title is mandatory")
@@ -17,8 +18,6 @@ public record TaskRequest(
         @NotBlank(message = "Task description is mandatory")
         String description,
         @NotNull(message = "Task due date is mandatory")
-        @NotEmpty(message = "Task due date is mandatory")
-        @NotBlank(message = "Task due date is mandatory")
         LocalDateTime dueDate
 ) {
 }

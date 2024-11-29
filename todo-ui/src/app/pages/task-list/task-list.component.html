@@ -1,0 +1,5 @@
+<div class="p-8 grid grid-cols-2 gap-4">
+  @for (task of tasks().content; track task.id){
+    <app-task [task]="task"/>
+  }
+</div>

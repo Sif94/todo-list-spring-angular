@@ -45,17 +45,25 @@ import io.swagger.v3.oas.annotations.servers.Server;
                 )
         }
 )
+//@SecurityScheme(
+//        name = "bearerAuth",
+//        description = "JWT auth description",
+//        scheme = "bearer",
+//        type = SecuritySchemeType.OAUTH2,
+//        flows = @OAuthFlows(
+//                password =
+//                @OAuthFlow(
+//                        authorizationUrl = "http://localhost:9090/realms/todo-realm/protocol/openid-connect/auth"
+//                )
+//        ),
+//        bearerFormat = "JWT",
+//        in = SecuritySchemeIn.HEADER
+//)
 @SecurityScheme(
         name = "bearerAuth",
         description = "JWT auth description",
         scheme = "bearer",
-        type = SecuritySchemeType.OAUTH2,
-        flows = @OAuthFlows(
-                clientCredentials =
-                @OAuthFlow(
-                        authorizationUrl = "http://localhost:9090/realms/todo-realm/protocol/openid-connect/auth"
-                )
-        ),
+        type = SecuritySchemeType.HTTP,
         bearerFormat = "JWT",
         in = SecuritySchemeIn.HEADER
 )
