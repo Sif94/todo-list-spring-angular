@@ -1,0 +1,8 @@
+@import "@fortawesome/fontawesome-free/css/all.min.css"; /* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.cursor-pointer {
+  cursor: pointer;
+}

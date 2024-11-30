@@ -19,11 +19,15 @@ services:
     ports:
       - "1080:1080"
       - "1025:1025"
+    networks:
+      - spring-todo
   keycloak:
     container_name: keycloak-todo
     image: quay.io/keycloak/keycloak:26.0.6
     ports:
       - "9090:8080"
+    volumes:
+      - keycloak-data:/opt/keycloak/data/
     environment:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
@@ -32,7 +36,22 @@ services:
     command:
       - "start-dev"
 
+  rabbitmq:
+    image: rabbitmq:4-management-alpine
+    container_name: todo-rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+    networks:
+      - spring-todo
+
 volumes:
+  keycloak-data:
+    driver: local
+  rabbitmq-data:
+    driver: local
   spring-postgres:
     driver: local
 
