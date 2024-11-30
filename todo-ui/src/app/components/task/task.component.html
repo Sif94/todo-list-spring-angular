@@ -1,1 +1,21 @@
-<p>{{task().title}}</p>
+<div class="bg-white shadow-md border rounded-md p-6 flex flex-col relative">
+    <h3 class="text-xl font-extrabold text-center my-2">{{task().title}}</h3>
+  <div class="p-3">
+    <div class="grid grid-flow-row gap-2">
+      <div class="flex justify-between">
+     <span class="text-lg text-blue-500 font-bold">
+       Status:
+       <span class="text-md font-bold text-black">
+         {{task().isDone}}
+       </span>
+     </span>
+        <div>
+          <i (click)="onComplete()" class="fas fa-share-nodes"></i>
+        </div>
+      </div>
+      <span class="text-lg text-blue-500 font-bold">Due Date: <span class="text-md font-bold text-black">{{task().dueDate}}</span></span>
+      <span class="text-lg text-blue-500 font-bold">Created Date: <span class="text-md font-bold text-black">{{task().createdDate}}</span></span>
+    </div>
+  </div>
+  <p class="text-start">{{task().description}}</p>
+</div>

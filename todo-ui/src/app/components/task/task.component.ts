@@ -1,5 +1,6 @@
-import {Component, input} from '@angular/core';
+import {Component, input, output} from '@angular/core';
 import {TaskResponse} from '../../services/models/task-response';
+import {TaskService} from '../../services/services/task.service';
 
 @Component({
   selector: 'app-task',
@@ -9,4 +10,11 @@ import {TaskResponse} from '../../services/models/task-response';
 })
 export class TaskComponent {
   task = input.required<TaskResponse>()
+  complete = output<TaskResponse>()
+  constructor(private taskService: TaskService) {
+  }
+
+  onComplete() {
+    this.complete.emit(this.task())
+  }
 }

@@ -33,7 +33,7 @@ public class TaskService {
 
 
     public PageResponse<TaskResponse> getTasksByUser(Authentication connectedUser, int page, int size) {
-        PageRequest pageRequest = PageRequest.of(0, 10);
+        PageRequest pageRequest = PageRequest.of(page, size);
         Page<Task> taskPage = repository.findByCreatedBy(connectedUser.getName(), pageRequest);
         List<TaskResponse> content = taskPage.getContent()
                 .stream()
@@ -58,13 +58,13 @@ public class TaskService {
 
         Task task = mapper.toTask(request);
         task.setOwnerEmail(email);
-        task.setStatus(TaskStatus.CREATED);
+        task.setIsDone(false);
         task.setHasBeenNotified(false);
         return repository.save(task).getId();
 
     }
 
-    public Long updateTaskStatus(Long id, TaskStatus status, Authentication connectedUser) {
+    public Long updateTaskStatus(Long id, Authentication connectedUser) {
         Task task = repository.findById(id)
                 .orElseThrow(
                         () -> new EntityNotFoundException(format("Task with ID:: %s was not found", id))
@@ -72,7 +72,7 @@ public class TaskService {
         if(!Objects.equals(connectedUser.getName(), task.getCreatedBy())){
             throw new OperationNotPermittedException("You cannot update others tasks status");
         }
-        task.setStatus(status);
+        task.setIsDone(!task.getIsDone());
         return repository.save(task).getId();
     }
 

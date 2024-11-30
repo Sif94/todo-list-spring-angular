@@ -115,19 +115,6 @@
               "type": "integer",
               "format": "int64"
             }
-          },
-          {
-            "name": "status",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "enum": [
-                "CREATED",
-                "COMPLETED",
-                "CANCELED"
-              ]
-            }
           }
         ],
         "responses": {
@@ -285,13 +272,8 @@
           "description": {
             "type": "string"
           },
-          "status": {
-            "type": "string",
-            "enum": [
-              "CREATED",
-              "COMPLETED",
-              "CANCELED"
-            ]
+          "isDone": {
+            "type": "boolean"
           },
           "dueDate": {
             "type": "string",

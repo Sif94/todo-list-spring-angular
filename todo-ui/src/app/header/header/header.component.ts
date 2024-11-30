@@ -1,6 +1,7 @@
-import {Component, signal} from '@angular/core';
+import {Component, output, signal} from '@angular/core';
 import {PrimaryButtonComponent} from '../../components/primary-button/primary-button.component';
 import {KeycloakService} from '../../services/keycloak/keycloak.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -11,11 +12,10 @@ import {KeycloakService} from '../../services/keycloak/keycloak.service';
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
-  title = signal<string>("Ecommerce APP");
-constructor(private kcService: KeycloakService) {
+constructor(private kcService: KeycloakService, private router: Router) {
 }
-  showButtonClicked() {
-    console.log("Button clicked")
+  goToAddTaskPage() {
+    this.router.navigate(['add-task'])
   }
 
   async logout() {

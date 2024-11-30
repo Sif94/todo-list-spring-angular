@@ -13,7 +13,7 @@ public class TaskResponse {
     private Long id;
     private String title;
     private String description;
-    private TaskStatus status;
+    private Boolean isDone;
     private LocalDateTime dueDate;
     private LocalDateTime createdDate;
     private LocalDateTime lastUpdatedDate;

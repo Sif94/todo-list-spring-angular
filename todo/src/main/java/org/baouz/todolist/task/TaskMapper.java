@@ -11,7 +11,7 @@ public class TaskMapper {
                 .title(task.getTitle())
                 .description(task.getDescription())
                 .dueDate(task.getDueDate())
-                .status(task.getStatus())
+                .isDone(task.getIsDone())
                 .createdDate(task.getCreatedDate())
                 .lastUpdatedDate(task.getLastModifiedDate())
                 .build();

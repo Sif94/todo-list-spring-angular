@@ -11,14 +11,12 @@ import { RequestBuilder } from '../../request-builder';
 
 export interface UpdateTaskStatus$Params {
   id: number;
-  status: 'CREATED' | 'COMPLETED' | 'CANCELED';
 }
 
 export function updateTaskStatus(http: HttpClient, rootUrl: string, params: UpdateTaskStatus$Params, context?: HttpContext): Observable<StrictHttpResponse<number>> {
   const rb = new RequestBuilder(rootUrl, updateTaskStatus.PATH, 'patch');
   if (params) {
     rb.path('id', params.id, {});
-    rb.query('status', params.status, {});
   }
 
   return http.request(

@@ -7,7 +7,7 @@ export interface TaskResponse {
   description?: string;
   dueDate?: string;
   id?: number;
+  isDone?: boolean;
   lastUpdatedDate?: string;
-  status?: 'CREATED' | 'COMPLETED' | 'CANCELED';
   title?: string;
 }

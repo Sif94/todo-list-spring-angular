@@ -35,10 +35,9 @@ public class TaskController {
     @PatchMapping("/{id}")
     public ResponseEntity<Long> updateTaskStatus(
             @PathVariable Long id,
-            TaskStatus status,
             Authentication connectedUser
     ){
-        return ResponseEntity.ok(service.updateTaskStatus(id, status, connectedUser));
+        return ResponseEntity.ok(service.updateTaskStatus(id, connectedUser));
     }
 
     @PutMapping("/{id}")

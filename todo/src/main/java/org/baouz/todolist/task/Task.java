@@ -29,8 +29,7 @@ public class Task extends BaseEntity implements Serializable {
     private String description;
     @Column(nullable = false)
     private LocalDateTime dueDate;
-    @Enumerated(STRING)
-    private TaskStatus status;
+    private Boolean isDone;
     private String ownerEmail;
     private Boolean hasBeenNotified;
 
